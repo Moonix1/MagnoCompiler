@@ -1,8 +1,23 @@
 #include <iostream>
 #include <stdlib.h>
+#include <string>
+#include <fstream>
 
-static void usage(char *program) {
-	std::cout << "Usage: " << program << " <Subcommand> <Args>" << std::endl;
+#include "Log/Log.h"
+
+#include "Lexer.h"
+
+static std::string GetFileContents(std::string path) {
+	std::ifstream file(path);
+	
+	std::stringstream buffer;
+	buffer << file.rdbuf();
+
+	return buffer.str();
+}
+
+static void Usage(std::string program) {
+	WARN("Usage: {0} <Subcommand> <Args>", program);
 	std::cout << "[SUBCOMMANDS]" << std::endl;
 	std::cout << "  - build =  Compiles the program" << std::endl;
 	std::cout << "    - <input>" << std::endl;
@@ -13,7 +28,7 @@ static void usage(char *program) {
 	std::cout << "  - help  =  Literally just prints this" << std::endl;
 }
 
-static char *shift(int &argc, char ***argv) {
+static char *Shift(int &argc, char ***argv) {
 	char *result = **argv;
 	*argv += 1;
 	argc += 1;
@@ -21,18 +36,26 @@ static char *shift(int &argc, char ***argv) {
 }
 
 int main(int argc, char **argv) {
-	char *program = shift(argc, &argv);
+	MagnoCompiler::Log::Init();
+
+	std::string program = Shift(argc, &argv);
 	if (argc < 3) {
-		usage(program);
+		Usage(program);
 		exit(1);
 	}
 
-	char *subcommand = shift(argc, &argv);
-	if (subcommand == "build") {
-	} else if (subcommand == "run") {
+	std::string subcommand = Shift(argc, &argv);
+	if (subcommand == "build" || subcommand == "run") {
+		char *input = Shift(argc, &argv);
+		char *output = Shift(argc, &argv);
+		MagnoCompiler::Lexer lexer;
+		lexer.LexSource(GetFileContents(input));
+	} else if (subcommand == "help") {
+		Usage(program);
+		exit(0);
 	} else {
-		usage(program);
-		std::cout << "[Error]: ";
+		Usage(program);
+		ERROR("Invalid subcommand: {0}", subcommand);
 		exit(1);
 	}
 }

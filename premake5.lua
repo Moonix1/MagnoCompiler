@@ -15,7 +15,10 @@ project "MCompiler"
 
 	files { "src/**.h", "src/**.cpp" }
 	
-	includedirs {}
+	includedirs {
+		"src",
+		"libs/spdlog/include"
+	}
 
 	filter "configurations:Debug"
         defines { "MC_DEBUG" }
