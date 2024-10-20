@@ -12,7 +12,7 @@ namespace MagnoCompiler {
 	private:
 		Token FetchToken();
 
-		Token LexName();
+		Token LexKI();
 		Token LexString();
 	private:
 		std::string m_Input;

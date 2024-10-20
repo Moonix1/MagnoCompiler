@@ -13,8 +13,9 @@ namespace MagnoCompiler {
 		}
 
 		std::unordered_map<TokenType, std::string> tokenTypeToString = {
-			{ TokenType::NAME, "name" },
+			{ TokenType::IDENT, "ident" },
 			{ TokenType::STRING, "string" },
+			{ TokenType::FUNCTION, "function" },
 			{ TokenType::LPAREN, "lparen" },
 			{ TokenType::RPAREN, "rparen" },
 			{ TokenType::LBRACE, "lbrace" },
@@ -36,7 +37,7 @@ namespace MagnoCompiler {
 			if (std::isspace(current)) { m_Pos++; continue; }
 
 			if (std::isalpha(current)) {
-				return LexName();
+				return LexKI();
 			}
 
 			switch (current) {
@@ -53,12 +54,14 @@ namespace MagnoCompiler {
 		}
 	}
 
-	Token Lexer::LexName() {
+	Token Lexer::LexKI() {
 		int start = m_Pos;
 		while (m_Pos < m_Input.size() && std::isalnum(m_Input[m_Pos])) { m_Pos++; }
 		std::string value = m_Input.substr(start, m_Pos - start);
 
-		return { .type = NAME, .value = value };
+		if (value == "fn") return { .type = FUNCTION, .value = value };
+
+		return { .type = IDENT, .value = value };
 	}
 
 	Token Lexer::LexString() {

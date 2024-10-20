@@ -5,8 +5,11 @@
 namespace MagnoCompiler {
 
 	enum TokenType {
-		NAME,
+		IDENT,
 		STRING,
+
+		FUNCTION,
+
 		LPAREN,
 		RPAREN,
 		LBRACE,
