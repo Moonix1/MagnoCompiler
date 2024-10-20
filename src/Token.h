@@ -16,6 +16,8 @@ namespace MagnoCompiler {
 		RBRACE,
 		LCURLYBRACE,
 		RCURLYBRACE,
+		COLON,
+		SEMICOLON,
 	};
 
 	struct Token {

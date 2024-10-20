@@ -22,6 +22,8 @@ namespace MagnoCompiler {
 			{ TokenType::RBRACE, "rbrace" },
 			{ TokenType::LCURLYBRACE, "lcurlybrace" },
 			{ TokenType::RCURLYBRACE, "rcurlybrace" },
+			{ TokenType::COLON, "colon" },
+			{ TokenType::SEMICOLON, "semicolon" },
 		};
 
 		for (Token &tok : tokens) {
@@ -48,6 +50,8 @@ namespace MagnoCompiler {
 			case ']': m_Pos++; return { .type = RBRACE, .value = std::string(1, current) };
 			case '{': m_Pos++; return { .type = LCURLYBRACE, .value = std::string(1, current) };
 			case '}': m_Pos++; return { .type = RCURLYBRACE, .value = std::string(1, current) };
+			case ':': m_Pos++; return { .type = COLON, .value = std::string(1, current) };
+			case ';': m_Pos++; return { .type = SEMICOLON, .value = std::string(1, current) };
 			}
 
 			m_Pos++;
